@@ -52,14 +52,17 @@ class SuironIO:
 
         # Serial inputs is a dict with key 'servo', and 'motor'
         serial_inputs = self.get_serial()
-        servo = serial_inputs['servo'] 
-        motor = serial_inputs['motor'] 
 
-        # Append to memory
-        # tolist so it actually appends the entire thing
-        self.frame_results.append(frame.tolist())
-        self.servo_results.append(servo)
-        self.motorspeed_results.append(motor)
+        # If its not in manual mode then proceed
+        if serial_inputs:
+            servo = serial_inputs['servo'] 
+            motor = serial_inputs['motor'] 
+
+            # Append to memory
+            # tolist so it actually appends the entire thing
+            self.frame_results.append(frame.tolist())
+            self.servo_results.append(servo)
+            self.motorspeed_results.append(motor)
 
     # Get motor inputs, steering inputs etc
     def get_serial(self):
@@ -86,6 +89,12 @@ class SuironIO:
     def normalize_serial(self, line):
         # Assuming that it receives 
         # servo, motor
+        
+        # 'error' basically means that 
+        # its in manual mode
+        if 'error' in line:
+            return None 
+
         line = line.replace('\n', '').split(',')
         line_dict = {'servo': int(line[0]), 'motor': int(line[1])}
         return line_dict
