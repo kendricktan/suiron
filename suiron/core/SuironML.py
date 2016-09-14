@@ -8,7 +8,7 @@ from tflearn.layers.estimator import regression
 # Gets a 2 layered CNN
 # (used for unprocessed data)
 def get_cnn_model(width=72, height=48, depth=3, outputs=10):
-    network = input_data(shape=[None, height, width, depth]])
+    network = input_data(shape=[None, height, width, depth], name='input')
 
     # Convolution layer no.1
     # ReLU was used as it introduces non-linearity
@@ -25,7 +25,9 @@ def get_cnn_model(width=72, height=48, depth=3, outputs=10):
     network = dropout(network, 0.5) # Reduces overfitting
 
     network = fully_connected(network, outputs, activation='softmax')
-    network = regression(network, optimizer='adam', loss='categorical_crossentropy', learning_rate=0.001)
+    network = regression(network, optimizer='adam', 
+                        loss='categorical_crossentropy', 
+                        learning_rate=0.001, name='target')
 
     # Verbosity yay nay
     # 0 = nothing
@@ -35,7 +37,7 @@ def get_cnn_model(width=72, height=48, depth=3, outputs=10):
 
 # Gets a one layered NN
 # (Used for preprocessed data)
-def get_nn(width=72, height=48, depth=1, outputs=10):
+def get_nn_model(width=72, height=48, depth=1, outputs=10):
    network = input_data(shape=[None, height, width, depth])
    network = fully_connected(network, height*2, activation='linear') 
    network = dropout(network, 0.5)
