@@ -1,20 +1,32 @@
-# suiron
-Franklin, the machine learning rc car
+# Suiron
+#### Machine Learning for RC Cars
+
 
 ## Dependencies
+#### __Python 2.7__ was chosen as it was supported by all the libraries used at the time
 ```
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install python-opencv python-dev
 
-pip install -r requirements.txt
+export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0-cp27-none-linux_x86_64.whl
+sudo pip install --upgrade $TF_BINARY_URL
+
+sudo pip install -r requirements.txt
 ```
 
 ## Collecting data
-### todo
+```
+python collect.py
+```
+
+## Visualizing collected data
+```
+python visualize.py
+```
 
 ## Training data
 ### todo
 
-## Visualizing collected data
+## Predicting data
 ### todo
