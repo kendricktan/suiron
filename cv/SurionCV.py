@@ -8,7 +8,7 @@ class SurionCV:
     """
 
     # Constructor
-    def __init__(self, width=1080, height=720, baudrate=9600):
+    def __init__(self, width=1080, height=720, serial_location='/dev/tty.usbserial', baudrate=9600):
         # Image settings
         self.width = width
         self.height = height
@@ -18,7 +18,7 @@ class SurionCV:
         self.vid_out = None
 
         # Serial IO
-        #self.ser = serial.Serial('/dev/tty.usbserial', baudrate)
+        self.ser = serial.Serial(serial_location, baudrate)
         self.inserial = None
     
     # Initialize settings before saving 
@@ -50,9 +50,9 @@ class SurionCV:
 
     # Save motor inputs, steering inputs etc
     def save_serial(self):
-        #serial_raw = self.ser.readline()
-        #serial_processed = self.normalize_serial(serial_raw)
-        self.inserial.write('1' + '\n')
+        serial_raw = self.ser.readline()
+        serial_processed = self.normalize_serial(serial_raw)
+        self.inserial.write(serial_processed + '\n')
 
     # Saves frame
     def save_frame(self):
