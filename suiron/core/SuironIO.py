@@ -3,6 +3,8 @@ import pandas as pd
 import cv2, os, serial, csv
 import matplotlib.pyplot as plt
 
+from suiron.utils.file_finder import get_new_filename
+
 class SuironIO:
     """
     Class which handles input output aspect of the suiron 
@@ -30,17 +32,8 @@ class SuironIO:
         self.motorspeed_results = [] 
     
     # Initialize settings before saving 
-    def init_saving(self, folder='data', filename='output_'):
-        # Folder
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-
-        # Filename for video
-        iter_name = 0
-        while os.path.exists(os.path.join(folder, filename+str(iter_name)+'.csv')):
-            iter_name += 1
-        fileoutname = filename + str(iter_name) + '.csv'
-        fileoutname = os.path.join(folder, fileoutname)
+    def init_saving(self, folder='data', filename='output_', extension='.csv'):
+        fileoutname = get_new_filename(folder=folder, filename=filename, extension=extension)
 
         # Filename to save serial data and image data
         # Output file

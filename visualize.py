@@ -1,3 +1,6 @@
 from suiron.core.SuironVZ import visualize_data
+from suiron.utils.file_finder import get_latest_filename
 
-visualize_data('data/output_0.csv')
+# Visualize latest filename
+filename = get_latest_filename() 
+visualize_data(filename)
