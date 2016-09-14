@@ -13,10 +13,11 @@ class SuironIO:
     """
 
     # Constructor
-    def __init__(self, width=72, height=48, serial_location='/dev/tty.usbserial', baudrate=9600):
+    def __init__(self, width=72, height=48, depth=3, serial_location='/dev/ttyUSB0', baudrate=57600):
         # Image settings
-        self.width = width
-        self.height = height
+        self.width = int(width)
+        self.height = int(height)
+        self.depth = int(depth)
 
         # Video IO 
         self.cap =  cv2.VideoCapture(0) # Use first capture device
@@ -43,11 +44,13 @@ class SuironIO:
     # Saves both inputs
     def record_inputs(self):
         frame = self.get_frame()
-        inserial = 1#self.get_serial()
+        throttle = 1#self.get_serial()
+        motor = 1#self.get_serial()
 
         # Append to memory
         self.frame_results.append(frame.tolist())
-        self.throttle_results.append(inserial)
+        self.throttle_results.append(throttle)
+        self.motorspeed_results.append(motor)
 
     # Get motor inputs, steering inputs etc
     def get_serial(self):
@@ -62,7 +65,7 @@ class SuironIO:
 
         # If we get a frame, save it
         if not ret:
-            return None
+            raise IOError('No image found!')
 
         frame = self.normalize_frame(frame)
         return frame
@@ -84,9 +87,10 @@ class SuironIO:
     def save_inputs(self):
         raw_data = {
             'image': self.frame_results, 
-            'throttle': self.throttle_results
+            'throttle': self.throttle_results,
+            'motor': self.motorspeed_results
         }
-        df = pd.DataFrame(raw_data, columns=['image', 'throttle'])
+        df = pd.DataFrame(raw_data, columns=['image', 'throttle', 'motor'])
         df.to_csv(self.outfile)
 
     def __del__(self):

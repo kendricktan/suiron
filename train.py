@@ -1,8 +1,14 @@
-import tflearn.datasets.mnist as mnist
+import json
 
 from suiron.core.SuironML import get_cnn_model, get_nn_model
 
+# Load image settings
+with open('settings.json') as d:
+    SETTINGS = json.load(d)
+
 def test_with_mnist():
+    import tflearn.datasets.mnist as mnist
+
     X, Y, testX, testY = mnist.load_data(one_hot=True)
     X = X.reshape([-1, 28, 28, 1])
     testX = testX.reshape([-1, 28, 28, 1])
