@@ -1,3 +1,4 @@
+import random
 import numpy as np
 import pandas as pd
 import cv2, os, serial, csv
@@ -23,7 +24,10 @@ class SuironIO:
         self.cap =  cv2.VideoCapture(0) # Use first capture device
 
         # Serial IO
-        self.ser = serial.Serial(serial_location, baudrate)
+        self.ser = None
+        if os.path.exists(serial_location):
+            print('Found %s, starting to read from it...' % serial_location)
+            self.ser = serial.Serial(serial_location, baudrate)        
         self.outfile = None
 
         # In-memory variable to record data
@@ -59,7 +63,10 @@ class SuironIO:
 
     # Get motor inputs, steering inputs etc
     def get_serial(self):
-        serial_raw = self.ser.readline()
+        # For debugging
+        serial_raw = '-1,-1\n'
+        if self.ser:
+            serial_raw = self.ser.readline()
         serial_processed = self.normalize_serial(serial_raw)
         return serial_processed
 

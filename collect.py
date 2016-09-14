@@ -19,8 +19,11 @@ print('Warming up...')
 #time.sleep(3)
 
 print('Recording data...')
-for i in range(60):
-    suironio.record_inputs()
+while True:
+    try:
+        suironio.record_inputs()
+    except KeyboardInterrupt:
+        break
 
 print('Saving file...')
 suironio.save_inputs()

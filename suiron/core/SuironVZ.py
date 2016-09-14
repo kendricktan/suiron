@@ -7,7 +7,7 @@ def visualize_data(filename, width=72, height=48, depth=3):
 
     for i in data.index:
         cur_img = data['image'][i]
-        cur_throttle = int(data['throttle'][i])
+        cur_throttle = int(data['servo'][i])
         cur_motor = int(data['motor'][i])
         
         # [1:-1] is used to remove '[' and ']' from string 
