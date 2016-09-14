@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 import pandas as pd
 
-WIDTH = 75
-HEIGHT = 50
+WIDTH = 72 
+HEIGHT = 48
 DEPTH = 3
 
 def visualize_data(filename):

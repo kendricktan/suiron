@@ -13,7 +13,7 @@ class SuironIO:
     """
 
     # Constructor
-    def __init__(self, width=75, height=50, serial_location='/dev/tty.usbserial', baudrate=9600):
+    def __init__(self, width=72, height=48, serial_location='/dev/tty.usbserial', baudrate=9600):
         # Image settings
         self.width = width
         self.height = height
