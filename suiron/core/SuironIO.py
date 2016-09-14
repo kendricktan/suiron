@@ -23,13 +23,13 @@ class SuironIO:
         self.cap =  cv2.VideoCapture(0) # Use first capture device
 
         # Serial IO
-        #self.ser = serial.Serial(serial_location, baudrate)
+        self.ser = serial.Serial(serial_location, baudrate)
         self.outfile = None
 
         # In-memory variable to record data
         # to prevent too much I/O
         self.frame_results = []
-        self.throttle_results = []
+        self.servo_results = []
         self.motorspeed_results = [] 
     
     # Initialize settings before saving 
@@ -43,20 +43,24 @@ class SuironIO:
 
     # Saves both inputs
     def record_inputs(self):
+        # Frame is just a numpy array
         frame = self.get_frame()
-        throttle = 1#self.get_serial()
-        motor = 1#self.get_serial()
+
+        # Serial inputs is a dict with key 'servo', and 'motor'
+        serial_inputs = self.get_serial()
+        servo = serial_inputs['servo'] 
+        motor = serial_inputs['motor'] 
 
         # Append to memory
+        # tolist so it actually appends the entire thing
         self.frame_results.append(frame.tolist())
-        self.throttle_results.append(throttle)
+        self.servo_results.append(servo)
         self.motorspeed_results.append(motor)
 
     # Get motor inputs, steering inputs etc
     def get_serial(self):
         serial_raw = self.ser.readline()
         serial_processed = self.normalize_serial(serial_raw)
-
         return serial_processed
 
     # Gets frame
@@ -73,7 +77,11 @@ class SuironIO:
     # Normalizes inputs so we don't have to worry about weird
     # characters e.g. \r\n
     def normalize_serial(self, line):
-        return line
+        # Assuming that it receives 
+        # servo, motor
+        line = line.replace('\n', '').split(',')
+        line_dict = {'servo': int(line[0]), 'motor': int(line[1])}
+        return line_dict
 
     # Normalizes frame so we don't have BGR as opposed to RGB
     def normalize_frame(self, frame):
@@ -87,10 +95,10 @@ class SuironIO:
     def save_inputs(self):
         raw_data = {
             'image': self.frame_results, 
-            'throttle': self.throttle_results,
+            'servo': self.servo_results,
             'motor': self.motorspeed_results
         }
-        df = pd.DataFrame(raw_data, columns=['image', 'throttle', 'motor'])
+        df = pd.DataFrame(raw_data, columns=['image', 'servo', 'motor'])
         df.to_csv(self.outfile)
 
     def __del__(self):
