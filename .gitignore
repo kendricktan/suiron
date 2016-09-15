@@ -99,3 +99,4 @@ ENV/
 # Models
 cnn_*
 checkpoint
+*.ckpt

@@ -22,11 +22,15 @@ python collect.py
 
 ## Visualizing collected data
 ```
-python visualize.py
+python visualize_collect.py
 ```
 
 ## Training data
-### todo
+```
+python train.py
+```
 
-## Predicting data
-### todo
+## Visualizing predicted data (off existing training set)
+```
+python visualize_predict.py
+```

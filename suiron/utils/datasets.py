@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from suiron.utils.img_serializer import deserialize_image
-from suiron.utils.functions import arduino_map
+from suiron.utils.functions import servo_to_target
 
 def get_servo_dataset(filename, start_index=0, end_index=None, output=10):
     data = pd.DataFrame.from_csv(filename)
@@ -24,16 +24,8 @@ def get_servo_dataset(filename, start_index=0, end_index=None, output=10):
         if data['servo'][i] < 40 or data['servo'][i] > 140:
             continue
 
+        # Append
         x.append(deserialize_image(data['image'][i]))
-
-        # Servo values
-        # Map from 40-140 to 1-10 and
-        # make them into a 1x10 dimensional array
-        # where array[N] is 1, and the rest is 0
-        # output-1 because computers count from 0
-        y_ = np.zeros(output)
-        index_ = arduino_map(data['servo'][i], 40, 140, 0, output-1)
-        y_[index_] = 1
-        servo.append(y_)
+        servo.append(servo_to_target(data['servo'][i], output))
 
     return x, servo
