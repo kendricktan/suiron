@@ -11,8 +11,8 @@ with open('settings.json') as d:
     SETTINGS = json.load(d)
 
 # Load up our CNN
-servo_model = get_cnn_model(checkpoint_path='cnn_model', **SETTINGS)
-servo_model.load('cnn_servo_model.ckpt')
+servo_model = get_cnn_model('cnn_model', SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], SETTINGS['output'])
+servo_model.load(SETTINGS['servo_cnn_name'] + '.ckpt')
 
 # Visualize latest filename
 filename = get_latest_filename() 
@@ -22,4 +22,4 @@ if len(sys.argv) > 1:
     filename = sys.argv[1]
 
 # Visualize it
-visualize_data(filename, model=servo_model, **SETTINGS)
+visualize_data(filename, SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], servo_model, SETTINGS['output'])
