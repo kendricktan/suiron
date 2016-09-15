@@ -16,7 +16,7 @@ suironio.init_saving()
 
 # Allows time for the camerae to warm up
 print('Warming up...')
-#time.sleep(3)
+time.sleep(5)
 
 print('Recording data...')
 while True:

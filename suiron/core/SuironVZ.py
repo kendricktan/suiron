@@ -17,9 +17,10 @@ def visualize_data(filename, width=72, height=48, depth=3):
 
         # Extra info
         cv2.putText(cur_img_array, "frame: %s" % str(i), (5,35), cv2.FONT_HERSHEY_SIMPLEX, 1, 255)
-        cv2.line(cur_img_array, (240, 300), (240+cur_throttle, 200), (0, 255, 0), 3)
+        cv2.line(cur_img_array, (240, 300), (240-(90-cur_throttle), 200), (0, 255, 0), 3)
 
         # Show frame
         # Convert to BGR cause thats how OpenCV likes it
         cv2.imshow('frame', cv2.cvtColor(cur_img_array, cv2.COLOR_RGB2BGR))
-        cv2.waitKey(0)
+        if cv2.waitKey(0) & 0xFF == ord('q'):
+            break
