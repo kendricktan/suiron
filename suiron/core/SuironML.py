@@ -7,7 +7,7 @@ from tflearn.layers.estimator import regression
 
 # Gets a 2 layered CNN
 # (used for unprocessed data)
-def get_cnn_model(width=72, height=48, depth=3, outputs=10):
+def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3, outputs=10):
     network = input_data(shape=[None, height, width, depth], name='input')
 
     # Convolution layer no.1
@@ -27,11 +27,11 @@ def get_cnn_model(width=72, height=48, depth=3, outputs=10):
     network = fully_connected(network, outputs, activation='softmax')
     network = regression(network, optimizer='adam', 
                         loss='categorical_crossentropy', 
-                        learning_rate=0.001, name='target')
+                        learning_rate=0.01, name='target')
 
     # Verbosity yay nay
     # 0 = nothing
-    model = tflearn.DNN(network, tensorboard_verbose=3) 
+    model = tflearn.DNN(network, tensorboard_verbose=3, checkpoint_path=checkpoint_path) 
     return model
 
 
@@ -42,7 +42,7 @@ def get_nn_model(width=72, height=48, depth=1, outputs=10):
    network = fully_connected(network, height*2, activation='linear') 
    network = dropout(network, 0.5)
    network = fully_connected(network, outputs, activation='linear')
-   network = regression(network, optimizer='sdg', loss='mean_square', learning_rate=0.01)
+   network = regression(network, optimizer='sdg', loss='mean_square', learning_rate=0.1)
 
-   model = tflearn.DNN(network, tensorboard_verbose=3)
+   model = tflearn.DNN(network, tensorboard_verbose=3, checkpoint_path='nn_model')
    return model 

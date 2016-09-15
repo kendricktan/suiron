@@ -4,6 +4,7 @@ import pandas as pd
 import cv2, os, serial, csv
 import matplotlib.pyplot as plt
 
+from suiron.utils.img_serializer import serialize_image
 from suiron.utils.file_finder import get_new_filename
 
 class SuironIO:
@@ -60,7 +61,7 @@ class SuironIO:
 
             # Append to memory
             # tolist so it actually appends the entire thing
-            self.frame_results.append(frame.tolist())
+            self.frame_results.append(serialize_image(frame))
             self.servo_results.append(servo)
             self.motorspeed_results.append(motor)
 
