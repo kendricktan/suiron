@@ -2,18 +2,22 @@ import serial, time
 
 ser = serial.Serial('/dev/ttyUSB0', 57600)
 
+time.sleep(5)
+
 print('Locking left...')
-ser.write('steer, 40')
+ser.write('steer,40\n')
 time.sleep(1)
 
 print('Locking right...')
-ser.write('steer, 140')
+ser.write('steer,140\n')
 time.sleep(1)
 
 print('motor forward')
-ser.write('motor, 110')
+ser.write('steer,90\n')
+time.sleep(0.025)
+ser.write('motor,110\n')
 time.sleep(1)
 
 print('motor stop')
-ser.write('motor, 90')
+ser.write('motor,90\n')
 
