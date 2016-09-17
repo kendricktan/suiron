@@ -4,6 +4,7 @@ import pandas as pd
 import cv2, os, serial, csv
 import matplotlib.pyplot as plt
 
+from suiron.utils.functions import target_to_servo
 from suiron.utils.img_serializer import serialize_image
 from suiron.utils.file_finder import get_new_filename
 
@@ -30,6 +31,7 @@ class SuironIO:
             print('Found %s, starting to read from it...' % serial_location)
             self.ser = serial.Serial(serial_location, baudrate)        
         self.outfile = None
+        self.output = None
 
         # In-memory variable to record data
         # to prevent too much I/O
@@ -37,6 +39,7 @@ class SuironIO:
         self.servo_results = []
         self.motorspeed_results = [] 
     
+    """ Functions below are used for inputs (recording data) """
     # Initialize settings before saving 
     def init_saving(self, folder='data', filename='output_', extension='.csv'):
         fileoutname = get_new_filename(folder=folder, filename=filename, extension=extension)
@@ -117,6 +120,21 @@ class SuironIO:
         }
         df = pd.DataFrame(raw_data, columns=['image', 'servo', 'motor'])
         df.to_csv(self.outfile)
+
+    """ Functions below are used for ouputs (controlling servo/motor) """
+    # Initializes the writing to the RC car
+    def init_writing(self, output=10):
+        self.output = output
+
+    # Controls the servo given the numpy array outputted by
+    # the neural network
+    def servo_write(np_y):
+        # Need output before we can proceed
+        if not self.output:
+            raise IOError('init_writing() must be called first before writing to serial ports!')
+
+        servo_out = target_to_servo(np_y, self.output=10)
+        self.ser.write('steer,' + str(servo_out) + '\n') 
 
     def __del__(self):
         if self.outfile:
