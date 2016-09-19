@@ -51,11 +51,11 @@ class SuironIO:
 
     # Saves both inputs
     def record_inputs(self):
-        # Serial inputs is a dict with key 'servo', and 'motor'
-        serial_inputs = self.get_serial()
-
         # Frame is just a numpy array
         frame = self.get_frame()
+
+        # Serial inputs is a dict with key 'servo', and 'motor'
+        serial_inputs = self.get_serial()
 
         # If its not in manual mode then proceed
         if serial_inputs:
@@ -73,6 +73,8 @@ class SuironIO:
         # For debugging
         serial_raw = '-1,-1\n'
         if self.ser:
+            # Polling for consistent data
+            self.ser.write('data plz\n')
             serial_raw = self.ser.readline()
         serial_processed = self.normalize_serial(serial_raw)
         return serial_processed
