@@ -74,7 +74,7 @@ class SuironIO:
         serial_raw = '-1,-1\n'
         if self.ser:
             # Polling for consistent data
-            self.ser.write('data plz\n')
+            self.ser.write('d')
             serial_raw = self.ser.readline()
         serial_processed = self.normalize_serial(serial_raw)
         return serial_processed
