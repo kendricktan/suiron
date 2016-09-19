@@ -51,11 +51,11 @@ class SuironIO:
 
     # Saves both inputs
     def record_inputs(self):
-        # Frame is just a numpy array
-        frame = self.get_frame()
-
         # Serial inputs is a dict with key 'servo', and 'motor'
         serial_inputs = self.get_serial()
+
+        # Frame is just a numpy array
+        frame = self.get_frame()
 
         # If its not in manual mode then proceed
         if serial_inputs:
@@ -96,12 +96,12 @@ class SuironIO:
         
         # 'error' basically means that 
         # its in manual mode
-        if 'error' in line:
-            return None 
-
-        line = line.replace('\n', '').split(',')
-        line_dict = {'servo': int(line[0]), 'motor': int(line[1])}
-        return line_dict
+        try:
+            line = line.replace('\n', '').split(',')
+            line_dict = {'servo': int(line[0]), 'motor': int(line[1])}
+            return line_dict
+        except:
+            return None
 
     # Normalizes frame so we don't have BGR as opposed to RGB
     def normalize_frame(self, frame):
