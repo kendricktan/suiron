@@ -130,14 +130,39 @@ class SuironIO:
 
     # Controls the servo given the numpy array outputted by
     # the neural network
-    def servo_write(np_y):
+    def servo_write(self, np_y):
         # Need output before we can proceed
         if not self.output:
             raise IOError('init_writing() must be called first before writing to serial ports!')
 
         servo_out = target_to_servo(np_y, self.output)
         self.ser.write('steer,' + str(servo_out) + '\n') 
+        time.sleep(0.02)
 
+    # Sets the motor at a fixed speed
+    def motor_write_fixed(self):
+        if not self.output:
+            raise IOError('init_writing() must be called first before writing to serial ports!')
+        
+        self.ser.write('motor,110\n')
+        time.sleep(0.02)
+
+    # Stops motors
+    def motor_stop(self):
+        if not self.output:
+            raise IOError('init_writing() must be called first before writing to serial ports!')
+        
+        self.ser.write('motor,90\n')
+        time.sleep(0.02)
+
+    # Staightens servos
+    def servo_straighten(self):
+        if not self.output:
+            raise IOError('init_writing() must be called first before writing to serial ports!')
+
+        self.ser.write('steer,90')
+        time.sleep(0.02)
+        
     def __del__(self):
         if self.outfile:
             self.outfile.close()

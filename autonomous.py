@@ -25,7 +25,8 @@ time.sleep(5)
 for i in range(50):
     suironio.get_frame()
 
-print('Entering autonomous mode now...')
+raw_input('Press any key to autonomous mode now...')
+suironio.motor_write_fixed()
 while True:
     try:
         # Get current frame
@@ -38,6 +39,7 @@ while True:
         suironio.servo_write(y_[0])
 
     except KeyboardInterrupt:
-        break
+        suironio.motor_stop()
+        suironio.servo_straighten()
 
 print('Exiting autonomous mode...')
