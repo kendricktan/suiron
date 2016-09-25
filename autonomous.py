@@ -4,6 +4,7 @@ import numpy as np
 
 from suiron.core.SuironIO import SuironIO
 from suiron.core.SuironML import get_cnn_model
+from suiron.utils.functions import target_to_servo
 
 # Image settings
 with open('settings.json') as d:
@@ -36,6 +37,14 @@ while True:
 
         # Get predictions
         y_ = servo_model.predict([c_frame])
+
+        
+        s_o = target_to_servo(y_[0])
+
+        if (s_o < 90):
+            print('left: %s' % str(s_o))
+        else:
+            print('right %s' % str(s_o))
 
         # Write outputs to servo
         suironio.servo_write(y_[0])

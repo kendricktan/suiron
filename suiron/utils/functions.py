@@ -23,5 +23,5 @@ def target_to_servo(y, output=10):
     # Get highest index value and map
     # it back
     y_ = np.argmax(y)
-    y_ = arduino_map(y_, 0, output-1, 40, 140)
+    y_ = arduino_map(y_, 0, output-1, 40, 150)
     return y_

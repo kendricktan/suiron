@@ -152,6 +152,13 @@ class SuironIO:
             raise IOError('init_writing() must be called first before writing to serial ports!')
 
         servo_out = target_to_servo(np_y, self.output)
+
+        if (servo_out < 90):
+            servo_out *= 0.85
+
+        elif (servo_out > 90):
+            servo_out *= 1.15
+
         self.ser.write('steer,' + str(servo_out) + '\n') 
         time.sleep(0.02)
 
@@ -160,7 +167,7 @@ class SuironIO:
         if not self.output:
             raise IOError('init_writing() must be called first before writing to serial ports!')
         
-        self.ser.write('motor,78\n')
+        self.ser.write('motor,80\n')
         time.sleep(0.02)
 
     # Stops motors
