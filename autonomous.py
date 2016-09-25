@@ -32,7 +32,7 @@ suironio.motor_write_fixed()
 while True:
     try:
         # Get current frame
-        c_frame = suironio.get_frame()
+        c_frame = suironio.get_frame_prediction()
 
         # Get predictions
         y_ = servo_model.predict([c_frame])

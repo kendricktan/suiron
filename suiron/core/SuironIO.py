@@ -91,6 +91,21 @@ class SuironIO:
         frame = self.normalize_frame(frame)
         return frame
 
+    # Gets frame for prediction
+    def get_frame_prediction(self):
+        ret, frame = self.cap.read()
+
+        # if we get a frame
+        if not ret:
+            raise IOError('No image found!')
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = cv2.resize(frame, (self.width, self.height), interpolation=cv2.INTER_CUBIC)
+        frame = frame.astype('uint8')
+
+        return frame
+    
+
     # Normalizes inputs so we don't have to worry about weird
     # characters e.g. \r\n
     def normalize_serial(self, line):
