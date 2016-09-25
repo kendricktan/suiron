@@ -13,6 +13,7 @@ print('Initiating I/O operations...')
 suironio = SuironIO(width=SETTINGS['width'], height=SETTINGS['height'], depth=SETTINGS['depth'])
 suironio.init_saving()
 suironio.init_writing(output=SETTINGS['output'])
+suironio.motor_stop()
 
 # CNN Model
 print('Initiating CNN model...')

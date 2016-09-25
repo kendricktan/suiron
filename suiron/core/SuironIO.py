@@ -144,7 +144,7 @@ class SuironIO:
         if not self.output:
             raise IOError('init_writing() must be called first before writing to serial ports!')
         
-        self.ser.write('motor,110\n')
+        self.ser.write('motor,78\n')
         time.sleep(0.02)
 
     # Stops motors
