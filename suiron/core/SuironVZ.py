@@ -34,7 +34,7 @@ def visualize_data(filename, width=72, height=48, depth=3, model=None):
         if model:
             y = model.predict([y_input])
             servo_out = target_to_servo(y[0])
-            cv2.line(cur_img_array, (240, 300), (240-(90-servo_out), 200), (0, 0, 255), 3)
+            cv2.line(cur_img_array, (240, 300), (240-(90-int(servo_out)), 200), (0, 0, 255), 3)
 
         # Show frame
         # Convert to BGR cause thats how OpenCV likes it

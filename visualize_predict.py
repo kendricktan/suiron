@@ -11,7 +11,7 @@ with open('settings.json') as d:
     SETTINGS = json.load(d)
 
 # Load up our CNN
-servo_model = get_cnn_model('cnn_model', SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], SETTINGS['output'])
+servo_model = get_cnn_model('cnn_model', SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'])
 servo_model.load(SETTINGS['servo_cnn_name'] + '.ckpt')
 
 # Visualize latest filename
@@ -22,4 +22,4 @@ if len(sys.argv) > 1:
     filename = sys.argv[1]
 
 # Visualize it
-visualize_data(filename, SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], servo_model, SETTINGS['output'])
+visualize_data(filename, SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], servo_model)

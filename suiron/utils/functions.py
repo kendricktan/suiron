@@ -19,11 +19,13 @@ def servo_to_target(y, output=10):
 def target_to_servo(y, output=10):
     # Get highest index value and map
     # it back
-    radians = np.argmax(y)
+    radians = y[np.argmax(y)]
 
     # output is in radians
     # convert to degrees
     degrees = radians * 180.0 / np.pi
+
+    print(degrees)
 
     # degrees to output
     y_ = arduino_map(degrees, 0.0, 90.0, 40.0, 150.0)
