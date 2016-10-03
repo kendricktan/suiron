@@ -11,23 +11,25 @@ from tflearn.layers.estimator import regression
 # NVIDIA's CNN architecture  
 # (used for unprocessed data)
 def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3):
+    
+    # Inputs
     network = input_data(shape=[None, height, width, depth], name='input')
 
     # Convolution no.1
     # Relu introduces non linearity into training
-    network = conv_2d(network, 24, [5, 3], activation='relu')
+    network = conv_2d(network, 8, [5, 3], activation='relu')
 
     # Convolution no.2
-    network = conv_2d(network, 36, [5, 24], activation='relu')
+    network = conv_2d(network, 12, [5, 8], activation='relu')
     
     # Convolution no.3
-    network = conv_2d(network, 48, [5, 36], activation='relu')
+    network = conv_2d(network, 16, [5, 16], activation='relu')
 
     # Convolution no.4
-    network = conv_2d(network, 64, [3, 48], activation='relu')
+    network = conv_2d(network, 24, [3, 20], activation='relu')
 
     # Convolution no.5
-    network = conv_2d(network, 64, [3, 64], activation='relu')
+    network = conv_2d(network, 24, [3, 24], activation='relu')
 
     # Fully connected no.1
     network = fully_connected(network, 256, activation='relu')
@@ -46,11 +48,10 @@ def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3):
     network = dropout(network, 0.8)
  
     # Fully connected no.5
-    network = fully_connected(network, 1, activation='tanh')    
+    network = fully_connected(network, 1, activation='tanh')
 
-    network = regression(network, optimizer='adam', 
-                        loss='categorical_crossentropy', 
-                        learning_rate=0.001, name='target')
+    # Regression
+    network = regression(network, loss='mean_square', metric='accuracy', learning_rate=1e-4,name='target') 
 
     # Verbosity yay nay
     # 0 = nothing
@@ -58,3 +59,4 @@ def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3):
     return model
 
 
+# 

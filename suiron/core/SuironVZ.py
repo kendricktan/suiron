@@ -7,7 +7,7 @@ from suiron.utils.img_serializer import deserialize_image
 
 # Visualize images
 # With and without any predictions
-def visualize_data(filename, width=72, height=48, depth=3, model=None, output=10):
+def visualize_data(filename, width=72, height=48, depth=3, model=None):
     """
     When model is specified it'll show what the model predicts (red)
     as opposed to what inputs it actually received (green)
@@ -33,7 +33,7 @@ def visualize_data(filename, width=72, height=48, depth=3, model=None, output=10
         # If we wanna visualize our model
         if model:
             y = model.predict([y_input])
-            servo_out = target_to_servo(y[0], output)
+            servo_out = target_to_servo(y[0])
             cv2.line(cur_img_array, (240, 300), (240-(90-servo_out), 200), (0, 0, 255), 3)
 
         # Show frame
