@@ -15,13 +15,13 @@ def get_servo_dataset(filename, start_index=0, end_index=None, output=10):
     # Outputs
     x = []
 
-    # Servo ranges from 40-140
+    # Servo ranges from 40-150
     # Gonna map them from 1-10
     servo = []
 
     for i in data.index[start_index:end_index]:
         # Don't want noisy data
-        if data['servo'][i] < 40 or data['servo'][i] > 140:
+        if data['servo'][i] < 40 or data['servo'][i] > 150:
             continue
 
         # Append

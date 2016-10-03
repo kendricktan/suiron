@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 import tflearn
 
 from tflearn.data_utils import shuffle, to_categorical
@@ -6,37 +8,47 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
 
-# Gets a 2 layered CNN
+# NVIDIA's CNN architecture  
 # (used for unprocessed data)
-def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3, output=10):
+def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3):
     network = input_data(shape=[None, height, width, depth], name='input')
 
     # Convolution no.1
-    # Max pooling does feature extraction
     # Relu introduces non linearity into training
-    network = conv_2d(network, 64, 11, strides=4, activation='relu')
-    network = max_pool_2d(network, 3, strides=2)
-    network = local_response_normalization(network)
+    network = conv_2d(network, 24, [5, 3], activation='relu')
 
     # Convolution no.2
-    network = conv_2d(network, 128, 5, activation='relu')
-    network = max_pool_2d(network, 3, strides=2)
-    network = local_response_normalization(network)
+    network = conv_2d(network, 36, [5, 24], activation='relu')
     
     # Convolution no.3
-    network = conv_2d(network, 256, 3, activation='relu')
-    network = conv_2d(network, 256, 3, activation='relu')
-    network = conv_2d(network, 128, 3, activation='relu')
-    network = max_pool_2d(network, 3, strides=2)
-    network = local_response_normalization(network)
-    network = fully_connected(network, 1024, activation='tanh')
-    # Dropout generalizes better
-    network = dropout(network, 0.5)
-    network = fully_connected(network, 1024, activation='tanh')
-    network = dropout(network, 0.5)
-    network = fully_connected(network, output, activation='softmax')
+    network = conv_2d(network, 48, [5, 36], activation='relu')
 
-    network = regression(network, optimizer='momentum', 
+    # Convolution no.4
+    network = conv_2d(network, 64, [3, 48], activation='relu')
+
+    # Convolution no.5
+    network = conv_2d(network, 64, [3, 64], activation='relu')
+
+    # Fully connected no.1
+    network = fully_connected(network, 256, activation='relu')
+    network = dropout(network, 0.8)
+
+    # Fully connected no.2
+    network = fully_connected(network, 100, activation='relu')
+    network = dropout(network, 0.8)
+
+    # Fully connected no.3
+    network = fully_connected(network, 50, activation='relu')
+    network = dropout(network, 0.8)
+
+    # Fully connected no.4
+    network = fully_connected(network, 10, activation='relu')
+    network = dropout(network, 0.8)
+ 
+    # Fully connected no.5
+    network = fully_connected(network, 1, activation='tanh')    
+
+    network = regression(network, optimizer='adam', 
                         loss='categorical_crossentropy', 
                         learning_rate=0.001, name='target')
 
@@ -46,14 +58,3 @@ def get_cnn_model(checkpoint_path='cnn_model', width=72, height=48, depth=3, out
     return model
 
 
-# Gets a one layered NN
-# (Used for preprocessed data)
-def get_nn_model(width=72, height=48, depth=1, outputs=10):
-   network = input_data(shape=[None, height, width, depth])
-   network = fully_connected(network, height*2, activation='linear') 
-   network = dropout(network, 0.5)
-   network = fully_connected(network, outputs, activation='linear')
-   network = regression(network, optimizer='sdg', loss='mean_square', learning_rate=0.1)
-
-   model = tflearn.DNN(network, tensorboard_verbose=3, checkpoint_path='nn_model')
-   return model 
