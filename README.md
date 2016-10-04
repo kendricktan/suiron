@@ -1,6 +1,8 @@
 # Suiron
 #### Machine Learning for RC Cars
 
+##Click the video below to see it in action!
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/tFwCyHdAWf0/0.jpg)](https://youtu.be/tFwCyHdAWf0 "Machine Learning Car")
 
 ## Dependencies
 #### __Python 2.7__ was chosen as it was supported by all the libraries used at the time
