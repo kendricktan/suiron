@@ -1,7 +1,10 @@
 # Suiron
 #### Machine Learning for RC Cars
 
-##Click the video below to see it in action!
+## Prediction visualization (green = actual, blue = prediction)
+![](https://thumbs.gfycat.com/DarlingForkedAcaciarat-size_restricted.gif)
+
+## Click the video below to see it in action!
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/tFwCyHdAWf0/0.jpg)](https://youtu.be/tFwCyHdAWf0 "Machine Learning Car")
 
 ## Dependencies
