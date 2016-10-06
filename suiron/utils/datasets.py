@@ -52,6 +52,6 @@ def get_motor_dataset(filename, start_index=0, end_index=None):
 
         # Append
         servo.append(raw_to_cnn(data['servo'][i]))
-        motor.append(raw_to_cnn(data['motor'][i]))
+        motor.append(raw_to_cnn(data['motor'][i], min_arduino=60.0, max_arduino=90.0))
 
     return servo, motor

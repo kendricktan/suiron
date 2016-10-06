@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import pandas as pd
 
-from suiron.utils.functions import cnn_to_raw, raw_motor_to_rgb
+from suiron.utils.functions import raw_to_cnn, cnn_to_raw, raw_motor_to_rgb
 from suiron.utils.img_serializer import deserialize_image
 
 # Visualize images
@@ -17,7 +17,7 @@ def visualize_data(filename, width=72, height=48, depth=3, cnn_model=None, nn_mo
     for i in data.index:
         cur_img = data['image'][i]
         cur_throttle = int(data['servo'][i])
-        cur_motor = int(data['motor'][i])
+        cur_motor = int(data['motor'][i])        
         
         # [1:-1] is used to remove '[' and ']' from string 
         cur_img_array = deserialize_image(cur_img)        
@@ -32,7 +32,7 @@ def visualize_data(filename, width=72, height=48, depth=3, cnn_model=None, nn_mo
 
         # Motor values
         # RGB
-        cv2.line(cur_img_array, (50, 300), (50, 300-((cur_motor-40)*2)), raw_motor_to_rgb(cur_motor), 3)
+        cv2.line(cur_img_array, (50, 160), (50, 160-(90-cur_motor)), raw_motor_to_rgb(cur_motor), 3)
 
         # If we wanna visualize our cnn_model
         if cnn_model:
@@ -41,10 +41,11 @@ def visualize_data(filename, width=72, height=48, depth=3, cnn_model=None, nn_mo
             cv2.line(cur_img_array, (240, 300), (240-(90-int(servo_out)), 200), (0, 0, 255), 3)
 
         # If we wanna visualize our nn_model
-        if nn_model:
-            y = nn_model.predict([cur_motor])
-            motor_out = cnn_to_raw(y[0])
-            cv2.line(cur_img_array, (50, 300), (50, 300-((motor_out-40)*2)), raw_motor_to_rgb(motor_out), 3)
+        if nn_model:            
+            y = nn_model.predict([np.array(raw_to_cnn(cur_throttle))])
+            motor_out = cnn_to_raw(y[0], min_arduino=60.0, max_arduino=90.0)
+            print(motor_out, cur_motor)
+            cv2.line(cur_img_array, (190, 160), (190, 240-(90-int(motor_out))), raw_motor_to_rgb(motor_out), 3)
 
         # Show frame
         # Convert to BGR cause thats how OpenCV likes it

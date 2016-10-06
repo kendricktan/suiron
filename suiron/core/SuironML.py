@@ -10,7 +10,7 @@ from tflearn.layers.estimator import regression
 
 # NVIDIA's CNN architecture  
 # (used for unprocessed data)
-def get_cnn_model(checkpoint_path='cnn_servo_model', width=72, height=48, depth=3):
+def get_cnn_model(checkpoint_path='cnn_servo_model', width=72, height=48, depth=3, session=None):
     
     # Inputs
     network = input_data(shape=[None, height, width, depth], name='input')
@@ -55,12 +55,12 @@ def get_cnn_model(checkpoint_path='cnn_servo_model', width=72, height=48, depth=
 
     # Verbosity yay nay
     # 0 = nothing
-    model = tflearn.DNN(network, tensorboard_verbose=2, checkpoint_path=checkpoint_path) 
+    model = tflearn.DNN(network, tensorboard_verbose=2, checkpoint_path=checkpoint_path, session=session) 
     return model
 
 # Simple One hidden layer NN to determine the (linear?) relationship between 
 # the steering angle and motor value
-def get_nn_model(checkpoint_path='nn_motor_model'):
+def get_nn_model(checkpoint_path='nn_motor_model', session=None):
     # Input is a single value (raw motor value)
     network = input_data(shape=[None, 1], name='input')
 
@@ -74,5 +74,5 @@ def get_nn_model(checkpoint_path='nn_motor_model'):
     network = regression(network, loss='mean_square', metric='accuracy', name='target')
 
     # Verbosity yay nay
-    model = tflearn.DNN(network, tensorboard_verbose=3, checkpoint_path=checkpoint_path)
+    model = tflearn.DNN(network, tensorboard_verbose=3, checkpoint_path=checkpoint_path, session=session)
     return model

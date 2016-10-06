@@ -25,13 +25,13 @@ print('[!] Finished loading dataset...')
 
 # One NN for servo, one for motor
 # for now, outputs = 10
-servo_model = get_nn_model(SETTINGS['motor_nn_name'])
+motor_model = get_nn_model(SETTINGS['motor_nn_name'])
 
 # Loads previous model if specified
 if len(sys.argv) > 1:
-    servo_model.load(sys.argv[1])
+    motor_model.load(sys.argv[1])
 
-servo_model.fit({'input': SERVO}, {'target': MOTOR}, n_epoch=1000,
+motor_model.fit({'input': SERVO}, {'target': MOTOR}, n_epoch=1000,
                 validation_set=0.1, show_metric=True, snapshot_epoch=False,
-                snapshot_step=50000, run_id=SETTINGS['motor_nn_name'])
-servo_model.save(SETTINGS['motor_nn_name'] + '.ckpt')
+                snapshot_step=10000, run_id=SETTINGS['motor_nn_name'])
+motor_model.save(SETTINGS['motor_nn_name'] + '.ckpt')
