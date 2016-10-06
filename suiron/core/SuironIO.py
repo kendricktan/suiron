@@ -5,7 +5,7 @@ import pandas as pd
 import cv2, os, serial, csv
 import matplotlib.pyplot as plt
 
-from suiron.utils.functions import target_to_servo
+from suiron.utils.functions import cnn_to_raw
 from suiron.utils.img_serializer import serialize_image
 from suiron.utils.file_finder import get_new_filename
 
@@ -151,7 +151,7 @@ class SuironIO:
         if not self.output:
             raise IOError('init_writing() must be called first before writing to serial ports!')
 
-        servo_out = target_to_servo(np_y, self.output)
+        servo_out = cnn_to_raw(np_y, self.output)
 
         if (servo_out < 90):
             servo_out *= 0.85

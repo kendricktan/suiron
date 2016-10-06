@@ -4,7 +4,7 @@ import numpy as np
 
 from suiron.core.SuironIO import SuironIO
 from suiron.core.SuironML import get_cnn_model
-from suiron.utils.functions import target_to_servo
+from suiron.utils.functions import cnn_to_raw
 
 # Image settings
 with open('settings.json') as d:
@@ -19,7 +19,7 @@ suironio.motor_stop()
 
 # CNN Model
 print('Initiating CNN model...')
-servo_model = get_cnn_model('cnn_model', SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], SETTINGS['output'])
+servo_model = get_cnn_model(SETTINGS['servo_cnn_name'], SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], SETTINGS['output'])
 servo_model.load(SETTINGS['servo_cnn_name'] + '.ckpt')
 
 print('Warming up camera...')
@@ -36,15 +36,8 @@ while True:
         c_frame = suironio.get_frame_prediction()
 
         # Get predictions
-        y_ = servo_model.predict([c_frame])
-
-        
-        s_o = target_to_servo(y_[0])
-
-        if (s_o < 90):
-            print('left: %s' % str(s_o))
-        else:
-            print('right %s' % str(s_o))
+        y_ = servo_model.predict([c_frame])        
+        s_o = cnn_to_raw(y_[0])
 
         # Write outputs to servo
         suironio.servo_write(y_[0])
