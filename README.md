@@ -1,5 +1,5 @@
 # Suiron
-#### Machine Learning for RC Cars
+### Machine Learning for RC Cars
 
 ## Prediction visualization (green = actual, blue = prediction)
 ![](https://thumbs.gfycat.com/DarlingForkedAcaciarat-size_restricted.gif)
@@ -35,7 +35,13 @@ python visualize_collect.py
 python train.py
 ```
 
-## Visualizing predicted data (off existing training set)
+## Visualizing predicted data
 ```
 python visualize_predict.py
 ```
+
+# References
+
+Communication between hardware and software repo - [car-controller](https://github.com/jabelone/car-controller)
+
+Neural Network architecture was based on NVIDIA's Self-driving car paper - [End-To-End Learning for Self-Driving Cars](https://arxiv.org/pdf/1604.07316v1.pdf)
