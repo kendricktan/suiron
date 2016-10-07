@@ -31,8 +31,7 @@ class SuironIO:
         if os.path.exists(serial_location):
             print('Found %s, starting to read from it...' % serial_location)
             self.ser = serial.Serial(serial_location, baudrate)        
-        self.outfile = None
-        self.output = None
+        self.outfile = None        
 
         # In-memory variable to record data
         # to prevent too much I/O
@@ -139,19 +138,11 @@ class SuironIO:
         df = pd.DataFrame(raw_data, columns=['image', 'servo', 'motor'])
         df.to_csv(self.outfile)
 
-    """ Functions below are used for ouputs (controlling servo/motor) """
-    # Initializes the writing to the RC car
-    def init_writing(self, output=10):
-        self.output = output
-
+    """ Functions below are used for ouputs (controlling servo/motor) """    
     # Controls the servo given the numpy array outputted by
     # the neural network
     def servo_write(self, np_y):
-        # Need output before we can proceed
-        if not self.output:
-            raise IOError('init_writing() must be called first before writing to serial ports!')
-
-        servo_out = cnn_to_raw(np_y, self.output)
+        servo_out = cnn_to_raw(np_y)
 
         if (servo_out < 90):
             servo_out *= 0.85
@@ -163,26 +154,17 @@ class SuironIO:
         time.sleep(0.02)
 
     # Sets the motor at a fixed speed
-    def motor_write_fixed(self):
-        if not self.output:
-            raise IOError('init_writing() must be called first before writing to serial ports!')
-        
+    def motor_write_fixed(self):    
         self.ser.write('motor,80\n')
         time.sleep(0.02)
 
     # Stops motors
-    def motor_stop(self):
-        if not self.output:
-            raise IOError('init_writing() must be called first before writing to serial ports!')
-        
+    def motor_stop(self):      
         self.ser.write('motor,90\n')
         time.sleep(0.02)
 
     # Staightens servos
     def servo_straighten(self):
-        if not self.output:
-            raise IOError('init_writing() must be called first before writing to serial ports!')
-
         self.ser.write('steer,90')
         time.sleep(0.02)
         

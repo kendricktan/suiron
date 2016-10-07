@@ -14,12 +14,11 @@ with open('settings.json') as d:
 print('Initiating I/O operations...')
 suironio = SuironIO(width=SETTINGS['width'], height=SETTINGS['height'], depth=SETTINGS['depth'])
 suironio.init_saving()
-suironio.init_writing(output=SETTINGS['output'])
 suironio.motor_stop()
 
 # CNN Model
 print('Initiating CNN model...')
-servo_model = get_cnn_model(SETTINGS['servo_cnn_name'], SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'], SETTINGS['output'])
+servo_model = get_cnn_model(SETTINGS['servo_cnn_name'], SETTINGS['width'], SETTINGS['height'], SETTINGS['depth'])
 servo_model.load(SETTINGS['servo_cnn_name'] + '.ckpt')
 
 print('Warming up camera...')
