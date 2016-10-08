@@ -1,8 +1,10 @@
 # Suiron
-### Machine Learning for RC Cars
+### Machine Learning for RC Cars 
 
 ## Prediction visualization (green = actual, blue = prediction)
 ![](https://thumbs.gfycat.com/DarlingForkedAcaciarat-size_restricted.gif)
+
+[Communicating between RC Car and the On-board Computer - Jabelone](http://jabelone.com.au/blog/make-autonomous-car-code-included/)
 
 ## Click the video below to see it in action!
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/tFwCyHdAWf0/0.jpg)](https://youtu.be/tFwCyHdAWf0 "Machine Learning Car")
